@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
+using System.Net.Mail;
 
 #endregion
 
@@ -26,6 +27,7 @@ namespace UTTT.Ejemplo.Persona
         private UTTT.Ejemplo.Linq.Data.Entity.Persona baseEntity;
         private DataContext dcGlobal = new DcGeneralDataContext();
         private int tipoAccion = 0;
+        private static string eMessage = string.Empty;
 
         #endregion
 
@@ -78,6 +80,7 @@ namespace UTTT.Ejemplo.Persona
                         this.txtNombre.Text = this.baseEntity.strNombre;
                         this.txtAPaterno.Text = this.baseEntity.strAPaterno;
                         this.txtAMaterno.Text = this.baseEntity.strAMaterno;
+                        this.txtCURP.Text = this.baseEntity.strCURP;
                         this.txtClaveUnica.Text = this.baseEntity.strClaveUnica;
                         this.setItem(ref this.ddlSexo, baseEntity.CatSexo.strValor);
                     }                
@@ -94,8 +97,14 @@ namespace UTTT.Ejemplo.Persona
 
         protected void btnAceptar_Click(object sender, EventArgs e)
         {
+            
             try
             {
+                if (!Page.IsValid)
+                {
+                    return;
+                }
+
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();
                 if (this.idPersona == 0)
@@ -104,7 +113,19 @@ namespace UTTT.Ejemplo.Persona
                     persona.strNombre = this.txtNombre.Text.Trim();
                     persona.strAMaterno = this.txtAMaterno.Text.Trim();
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
+                    persona.strCURP = this.txtCURP.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
+
+                    string mensaje = string.Empty;
+                    //validacion datos en el codigo
+                    if(!this.validacion(persona, ref mensaje))
+                    {
+                        this.lblMensaje.Text = mensaje;
+                        this.lblMensaje.Visible = true;
+                        return;
+                    }
+
+
                     dcGuardar.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().InsertOnSubmit(persona);
                     dcGuardar.SubmitChanges();
                     this.showMessage("El registro se agrego correctamente.");
@@ -118,15 +139,41 @@ namespace UTTT.Ejemplo.Persona
                     persona.strNombre = this.txtNombre.Text.Trim();
                     persona.strAMaterno = this.txtAMaterno.Text.Trim();
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
+                    persona.strCURP = this.txtCURP.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
                     dcGuardar.SubmitChanges();
                     this.showMessage("El registro se edito correctamente.");
                     this.Response.Redirect("~/PersonaPrincipal.aspx", false);
                 }
             }
-            catch (Exception _e)
+            catch (Exception ex)
             {
-                this.showMessageException(_e.Message);
+                
+                    System.Text.StringBuilder msg = new System.Text.StringBuilder();
+                    msg.AppendLine(ex.GetType().FullName);
+                    msg.AppendLine(ex.Message);
+                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace();
+                    msg.AppendLine(st.ToString());
+                    msg.AppendLine();
+                    eMessage = msg.ToString();
+                
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("19301522@uttt.edu.mx");
+                    mail.To.Add("hack.ta66@gmail.com");
+                    mail.To.Add("edel.meza@uttt.edu.mx");
+                    mail.Subject = "Exception stack";
+                    mail.Body = eMessage;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new System.Net.NetworkCredential("19301522@uttt.edu.mx", "OAR7550O");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+                this.Response.Redirect("~/errorPage.aspx");
             }
         }
 
@@ -180,5 +227,68 @@ namespace UTTT.Ejemplo.Persona
         }
 
         #endregion
+
+        #region Validación código
+        ///<summary>
+        /// Valida datos básicos 
+        /// </summary>
+        /// <param name="_persona"></param>
+        /// <param name="_mensaje"></param>
+        /// <returns></returns>
+        
+        public bool validacion(UTTT.Ejemplo.Linq.Data.Entity.Persona _persona, ref String _mensaje)
+        {
+            if(_persona.idCatSexo == -1)
+            {
+                _mensaje = "Seleccione Masculino o Femenino";
+                return false;
+            }
+
+            int i = 0;
+            //verifica si un texto es un numero
+            if(int.TryParse(_persona.strClaveUnica, out i)== false)
+            {
+                _mensaje = "La clave unica debe de ser un numero";
+                return false;
+            }
+
+            /// Validamos un numero
+            /// string. saber que es un numero
+            /// 99 y 1000
+            
+            if(int.Parse(_persona.strClaveUnica)<100 || int.Parse(_persona.strClaveUnica) > 999)
+            {
+                _mensaje = "La clave unica esta fuera de rango";
+                return false;
+            }
+
+            if (_persona.strNombre.Equals(String.Empty))
+            {
+                _mensaje = "Nombre esta vacio";
+                return false;
+            }
+
+            if(_persona.strNombre.Length > 50)
+            {
+                _mensaje = "Los caracteres permitidos para nombre rebasan lo establecido de 50";
+                return false;
+            }
+
+            if (_persona.strAPaterno.Equals(String.Empty))
+            {
+                _mensaje = "APaterno esta vacio";
+                return false;
+            }
+
+            if (_persona.strAPaterno.Length > 50)
+            {
+                _mensaje = "Los caracteres permitidos para APaterno rebasan lo establecido de 50";
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
     }
 }
