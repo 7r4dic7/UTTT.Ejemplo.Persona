@@ -104,6 +104,11 @@ namespace UTTT.Ejemplo.Persona
                 {
                     return;
                 }
+                if (this.txtClaveUnica.Text.Trim() == String.Empty && this.txtNombre.Text.Trim() == String.Empty &&
+                    this.txtAPaterno.Text.Trim() == String.Empty && this.txtAMaterno.Text.Trim() == String.Empty && int.Parse(this.ddlSexo.Text) == -1)
+                {
+                    this.Response.Redirect("~/PersonaPrincipal.aspx", false);
+                }
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();
