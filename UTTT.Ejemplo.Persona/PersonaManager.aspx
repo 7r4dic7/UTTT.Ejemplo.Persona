@@ -134,7 +134,7 @@
         
             <asp:RequiredFieldValidator ID="rfvAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         
-            <asp:RegularExpressionValidator ID="revAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Formato incorrecto" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
+            <asp:RegularExpressionValidator ID="revAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Formato incorrecto" ValidationGroup="vgPersona" ValidationExpression="^([a-zA-Z]+)(\s[a-zA-Z]+)*$"></asp:RegularExpressionValidator>
         
         </div>
     <div> 

@@ -13,6 +13,7 @@ using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 #endregion
 
@@ -243,6 +244,7 @@ namespace UTTT.Ejemplo.Persona
         
         public bool validacion(UTTT.Ejemplo.Linq.Data.Entity.Persona _persona, ref String _mensaje)
         {
+            
             if(_persona.idCatSexo == -1)
             {
                 _mensaje = "Seleccione Masculino o Femenino";
@@ -272,8 +274,35 @@ namespace UTTT.Ejemplo.Persona
                 _mensaje = "Nombre esta vacio";
                 return false;
             }
+            //Valida Nombre solo contenga letras 
+            if(!Regex.IsMatch(_persona.strNombre, @"^[a-zA-Z]+$"))
+            {
+                _mensaje = "Formato incorrecto en Nombre";
+                return false;
+            }
 
-            if(_persona.strNombre.Length > 50)
+            //Valida APaterno solo contenga letras 
+            if (!Regex.IsMatch(_persona.strAPaterno, @"^[a-zA-Z]+$"))
+            {
+                _mensaje = "Formato incorrecto en APaterno";
+                return false;
+            }
+
+            //Valida AMaterno solo contenga letras 
+            if (!Regex.IsMatch(_persona.strAMaterno, @"^[a-zA-Z]+$"))
+            {
+                _mensaje = "Formato incorrecto en AMaterno";
+                return false;
+            }
+
+            //Valida CURP 
+            if (!Regex.IsMatch(_persona.strCURP, @"^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$"))
+            {
+                _mensaje = "Formato incorrecto en CURP";
+                return false;
+            }
+
+            if (_persona.strNombre.Length > 50)
             {
                 _mensaje = "Los caracteres permitidos para nombre rebasan lo establecido de 50";
                 return false;
