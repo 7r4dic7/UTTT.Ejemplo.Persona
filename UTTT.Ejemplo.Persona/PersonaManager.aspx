@@ -85,7 +85,7 @@
                 Height="25px" Width="253px" 
                 onselectedindexchanged="ddlSexo_SelectedIndexChanged">
             </asp:DropDownList>
-            <asp:RequiredFieldValidator ID="rfvSexo" runat="server" ControlToValidate="ddlSexo" ErrorMessage="*Selecciona un sexo " InitialValue="-1"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="rfvSexo" runat="server" ControlToValidate="ddlSexo" ErrorMessage="*Selecciona un sexo " InitialValue="-1" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
     </div>
 
         </div>
@@ -96,11 +96,11 @@
             Clave Unica:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
             <asp:TextBox ID="txtClaveUnica" runat="server" 
                 Width="249px" ViewStateMode="Disabled" onkeypress="return validaNumeros(event);" pattern=".{1,3}"
-                required title="1 a 3 es la longitud que se permite ingresar"></asp:TextBox>
+                title="1 a 3 es la longitud que se permite ingresar"></asp:TextBox>
         
-            <asp:RangeValidator ID="rvClaveUnica" runat="server" ControlToValidate="txtClaveUnica" ErrorMessage="*La clave unica debe de estar entre 100 y 999" MaximumValue="999" MinimumValue="100" Type="Integer"></asp:RangeValidator>
+            <asp:RangeValidator ID="rvClaveUnica" runat="server" ControlToValidate="txtClaveUnica" ErrorMessage="*La clave unica debe de estar entre 100 y 999" MaximumValue="999" MinimumValue="100" Type="Integer" ValidationGroup="vgPersona"></asp:RangeValidator>
         
-            <asp:RequiredFieldValidator ID="rfvClaveUnica" runat="server" ControlToValidate="txtClaveUnica" ErrorMessage="*Campo obligatorio"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="rfvClaveUnica" runat="server" ControlToValidate="txtClaveUnica" ErrorMessage="*Campo obligatorio" InitialValue="vgPersona"></asp:RequiredFieldValidator>
         
         </div>
         <div>
@@ -111,7 +111,7 @@
                 ID="txtNombre" runat="server" Width="249px" ViewStateMode="Disabled"
                 onkeypress="return validaLetras(event);"></asp:TextBox>
         
-            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="*Nombre es obligatorio"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="*Nombre es obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         
         </div>
         <div> 
@@ -119,7 +119,7 @@
             A Paterno:&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox 
                 ID="txtAPaterno" runat="server" Width="249px" ViewStateMode="Disabled"
                 onkeypress="return validaLetras(event);"></asp:TextBox>
-            <asp:RequiredFieldValidator ID="rfvAPaterno" runat="server" ControlToValidate="txtAPaterno" ErrorMessage="*Campo obligatorio"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="rfvAPaterno" runat="server" ControlToValidate="txtAPaterno" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         </div>
         <div>
         
@@ -129,7 +129,7 @@
             <asp:TextBox ID="txtAMaterno" runat="server" Width="248px" 
                 ViewStateMode="Disabled" onkeypress="return validaLetras(event);"></asp:TextBox>
         
-            <asp:RequiredFieldValidator ID="rfvAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Campo obligatorio"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="rfvAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         
         </div>
     <div> 
@@ -138,8 +138,8 @@
         <asp:TextBox ID="txtCURP" runat="server" Width="250px" ViewStateMode="Disabled"
             onkeypress="return validaCurp(event);"></asp:TextBox>
     
-        <asp:RequiredFieldValidator ID="rfvCURP" runat="server" ControlToValidate="txtCURP" ErrorMessage="*Campo obligatorio"></asp:RequiredFieldValidator>
-        <asp:RegularExpressionValidator ID="revCURP" runat="server" ControlToValidate="txtCURP" ErrorMessage="*La CURP es incorrecta" ValidationExpression="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$"></asp:RegularExpressionValidator>
+        <asp:RequiredFieldValidator ID="rfvCURP" runat="server" ControlToValidate="txtCURP" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
+        <asp:RegularExpressionValidator ID="revCURP" runat="server" ControlToValidate="txtCURP" ErrorMessage="*La CURP es incorrecta" ValidationExpression="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
     
         <div>
             <asp:Label ID="lblMensaje" runat="server" ForeColor="Red" Visible="False"></asp:Label>
@@ -151,7 +151,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      
         <asp:Button ID="btnAceptar" runat="server" Text="Aceptar" 
-            onclick="btnAceptar_Click" ViewStateMode="Disabled" />
+            onclick="btnAceptar_Click" ViewStateMode="Disabled" ValidationGroup="vgPersona" />
         &nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" 
             onclick="btnCancelar_Click" ViewStateMode="Disabled" />
