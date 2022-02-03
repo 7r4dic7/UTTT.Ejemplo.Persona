@@ -274,11 +274,20 @@ namespace UTTT.Ejemplo.Persona
                 return false;
             }
 
-            if (_persona.strAMaterno.Length < 3)
+            if(_persona.strAMaterno != String.Empty)
             {
-                _mensaje = "AMaterno debe contener al menos 3 caracteres";
-                return false;
+                if (_persona.strAMaterno.Length < 3)
+                {
+                    _mensaje = "AMaterno debe contener al menos 3 caracteres";
+                    return false;
+                }
+                if (!Regex.IsMatch(_persona.strAMaterno, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
+                {
+                    _mensaje = "Formato incorrecto en AMaterno";
+                    return false;
+                }
             }
+            
 
             //Valida Nombre solo contenga letras 
             if (!Regex.IsMatch(_persona.strNombre, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
@@ -293,14 +302,7 @@ namespace UTTT.Ejemplo.Persona
                 _mensaje = "Formato incorrecto en APaterno";
                 return false;
             }
-
-            //Valida AMaterno solo contenga letras 
-            if (!Regex.IsMatch(_persona.strAMaterno, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
-            {
-                _mensaje = "Formato incorrecto en AMaterno";
-                return false;
-            }
-
+            
             //Valida CURP 
             if (!Regex.IsMatch(_persona.strCURP, @"^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$"))
             {
@@ -323,12 +325,6 @@ namespace UTTT.Ejemplo.Persona
             if (_persona.strAPaterno.Length > 50)
             {
                 _mensaje = "Los caracteres permitidos para APaterno rebasan lo establecido de 50";
-                return false;
-            }
-
-            if (_persona.strAMaterno.Equals(String.Empty))
-            {
-                _mensaje = "AMaterno esta vacio";
                 return false;
             }
 
