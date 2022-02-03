@@ -84,8 +84,10 @@ namespace UTTT.Ejemplo.Persona
                         this.txtCURP.Text = this.baseEntity.strCURP;
                         this.txtClaveUnica.Text = this.baseEntity.strClaveUnica;
                         this.setItem(ref this.ddlSexo, baseEntity.CatSexo.strValor);
-                    }                
+
+                    }
                 }
+                
 
             }
             catch (Exception _e)
@@ -147,6 +149,16 @@ namespace UTTT.Ejemplo.Persona
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
                     persona.strCURP = this.txtCURP.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
+
+                    string mensaje = string.Empty;
+                    //validacion datos en el codigo
+                    if (!this.validacion(persona, ref mensaje))
+                    {
+                        this.lblMensaje.Text = mensaje;
+                        this.lblMensaje.Visible = true;
+                        return;
+                    }
+
                     dcGuardar.SubmitChanges();
                     this.showMessage("El registro se edito correctamente.");
                     this.Response.Redirect("~/PersonaPrincipal.aspx", false);
@@ -154,32 +166,7 @@ namespace UTTT.Ejemplo.Persona
             }
             catch (Exception ex)
             {
-                
-                    System.Text.StringBuilder msg = new System.Text.StringBuilder();
-                    msg.AppendLine(ex.GetType().FullName);
-                    msg.AppendLine(ex.Message);
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace();
-                    msg.AppendLine(st.ToString());
-                    msg.AppendLine();
-                    eMessage = msg.ToString();
-                
-
-                using (MailMessage mail = new MailMessage())
-                {
-                    mail.From = new MailAddress("19301522@uttt.edu.mx");
-                    mail.To.Add("hack.ta66@gmail.com");
-                    mail.To.Add("edel.meza@uttt.edu.mx");
-                    mail.Subject = "Exception stack";
-                    mail.Body = eMessage;
-
-                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
-                    {
-                        smtp.Credentials = new System.Net.NetworkCredential("19301522@uttt.edu.mx", "OAR7550O");
-                        smtp.EnableSsl = true;
-                        smtp.Send(mail);
-                    }
-                }
-                this.Response.Redirect("~/errorPage.aspx");
+                ExceptionMessage(ex);
             }
         }
 
@@ -342,6 +329,33 @@ namespace UTTT.Ejemplo.Persona
             return true;
         }
         #endregion
+        protected void ExceptionMessage(Exception e)
+        {
+            System.Text.StringBuilder msg = new System.Text.StringBuilder();
+            msg.AppendLine(e.GetType().FullName);
+            msg.AppendLine(e.Message);
+            System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace();
+            msg.AppendLine(st.ToString());
+            msg.AppendLine();
+            eMessage = msg.ToString();
 
+
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("19301522@uttt.edu.mx");
+                mail.To.Add("hack.ta66@gmail.com");
+                mail.To.Add("edel.meza@uttt.edu.mx");
+                mail.Subject = "Exception stack";
+                mail.Body = eMessage;
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.Credentials = new System.Net.NetworkCredential("19301522@uttt.edu.mx", "OAR7550O");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+            this.Response.Redirect("~/errorPage.aspx");
+        }
     }
 }
