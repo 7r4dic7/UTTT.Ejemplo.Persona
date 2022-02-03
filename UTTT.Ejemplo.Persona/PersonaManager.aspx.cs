@@ -69,8 +69,8 @@ namespace UTTT.Ejemplo.Persona
                     this.ddlSexo.DataSource = lista;
                     this.ddlSexo.DataBind();
 
-                    this.ddlSexo.SelectedIndexChanged += new EventHandler(ddlSexo_SelectedIndexChanged);
-                    this.ddlSexo.AutoPostBack = true;
+                    //this.ddlSexo.SelectedIndexChanged += new EventHandler(ddlSexo_SelectedIndexChanged);
+                    this.ddlSexo.AutoPostBack = false;
                     if (this.idPersona == 0)
                     {
                         this.lblAccion.Text = "Agregar";
@@ -112,6 +112,11 @@ namespace UTTT.Ejemplo.Persona
                 {
                     this.Response.Redirect("~/PersonaPrincipal.aspx", false);
                 }
+                else
+                {
+                    btnAceptar.ValidationGroup = "vgPersona";
+                    Page.Validate("vgPersona");
+                }
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();
@@ -151,6 +156,15 @@ namespace UTTT.Ejemplo.Persona
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
 
                     string mensaje = string.Empty;
+                    this.lblMensaje.Visible = true; 
+                    this.lblMensaje.Text = this.ddlSexo.Text;
+                    if (int.Parse(this.ddlSexo.Text) == -1)
+                    {
+                        mensaje = "Seleciona un sexo";
+                        this.lblMensaje.Text = mensaje;
+                        return;
+                    }
+
                     //validacion datos en el codigo
                     if (!this.validacion(persona, ref mensaje))
                     {
@@ -334,6 +348,13 @@ namespace UTTT.Ejemplo.Persona
                 return false;
             }
 
+            //Valida que un sexo este seleccionado
+            if(_persona.idCatSexo == -1)
+            {
+                _mensaje = "Selecciona un sexo";
+                return false;
+            }
+
             return true;
         }
         #endregion
@@ -352,7 +373,7 @@ namespace UTTT.Ejemplo.Persona
             {
                 mail.From = new MailAddress("19301522@uttt.edu.mx");
                 mail.To.Add("hack.ta66@gmail.com");
-                mail.To.Add("edel.meza@uttt.edu.mx");
+                //mail.To.Add("edel.meza@uttt.edu.mx");
                 mail.Subject = "Exception stack";
                 mail.Body = eMessage;
 
