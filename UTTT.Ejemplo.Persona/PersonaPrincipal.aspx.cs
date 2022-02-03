@@ -11,7 +11,6 @@ using System.Linq.Expressions;
 using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
-
 #endregion
 
 namespace UTTT.Ejemplo.Persona
@@ -47,6 +46,8 @@ namespace UTTT.Ejemplo.Persona
             }
             catch (Exception _e)
             {
+                var ex = new PersonaManager(); 
+                ex.ExceptionMessage(_e);
                 this.showMessage("Ha ocurrido un problema al cargar la página");               
             }
         }

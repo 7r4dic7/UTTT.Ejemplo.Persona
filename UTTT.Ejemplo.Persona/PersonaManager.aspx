@@ -113,7 +113,7 @@
         
             <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="*Nombre es obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         
-            <asp:RegularExpressionValidator ID="revNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="*Formato invalido" ValidationExpression="^([a-zA-Z]+)(\s[a-zA-Z]+)*$" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
+            <asp:RegularExpressionValidator ID="revNombre" runat="server" ControlToValidate="txtNombre" ErrorMessage="*Formato invalido" ValidationExpression="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
         
         </div>
         <div> 
@@ -122,7 +122,7 @@
                 ID="txtAPaterno" runat="server" Width="249px" ViewStateMode="Disabled"
                 onkeypress="return validaLetras(event);"></asp:TextBox>
             <asp:RequiredFieldValidator ID="rfvAPaterno" runat="server" ControlToValidate="txtAPaterno" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
-            <asp:RegularExpressionValidator ID="revAPaterno" runat="server" ControlToValidate="txtAPaterno" ErrorMessage="*Formato incorrecto" ValidationExpression="^([a-zA-Z]+)(\s[a-zA-Z]+)*$" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
+            <asp:RegularExpressionValidator ID="revAPaterno" runat="server" ControlToValidate="txtAPaterno" ErrorMessage="*Formato incorrecto" ValidationExpression="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" ValidationGroup="vgPersona"></asp:RegularExpressionValidator>
         </div>
         <div>
         
@@ -134,7 +134,7 @@
         
             <asp:RequiredFieldValidator ID="rfvAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
         
-            <asp:RegularExpressionValidator ID="revAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Formato incorrecto" ValidationGroup="vgPersona" ValidationExpression="^([a-zA-Z]+)(\s[a-zA-Z]+)*$"></asp:RegularExpressionValidator>
+            <asp:RegularExpressionValidator ID="revAMaterno" runat="server" ControlToValidate="txtAMaterno" ErrorMessage="*Formato incorrecto" ValidationGroup="vgPersona" ValidationExpression="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"></asp:RegularExpressionValidator>
         
         </div>
     <div> 

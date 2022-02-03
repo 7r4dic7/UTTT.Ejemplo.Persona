@@ -281,21 +281,21 @@ namespace UTTT.Ejemplo.Persona
             }
 
             //Valida Nombre solo contenga letras 
-            if (!Regex.IsMatch(_persona.strNombre, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(_persona.strNombre, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
             {
                 _mensaje = "Formato incorrecto en Nombre";
                 return false;
             }
 
             //Valida APaterno solo contenga letras 
-            if (!Regex.IsMatch(_persona.strAPaterno, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(_persona.strAPaterno, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
             {
                 _mensaje = "Formato incorrecto en APaterno";
                 return false;
             }
 
             //Valida AMaterno solo contenga letras 
-            if (!Regex.IsMatch(_persona.strAMaterno, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(_persona.strAMaterno, @"^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"))
             {
                 _mensaje = "Formato incorrecto en AMaterno";
                 return false;
@@ -326,10 +326,22 @@ namespace UTTT.Ejemplo.Persona
                 return false;
             }
 
+            if (_persona.strAMaterno.Equals(String.Empty))
+            {
+                _mensaje = "AMaterno esta vacio";
+                return false;
+            }
+
+            if (_persona.strAMaterno.Length > 50)
+            {
+                _mensaje = "Los caracteres permitidos para AMaterno rebasan lo establecido de 50";
+                return false;
+            }
+
             return true;
         }
         #endregion
-        protected void ExceptionMessage(Exception e)
+        public void ExceptionMessage(Exception e)
         {
             System.Text.StringBuilder msg = new System.Text.StringBuilder();
             msg.AppendLine(e.GetType().FullName);
