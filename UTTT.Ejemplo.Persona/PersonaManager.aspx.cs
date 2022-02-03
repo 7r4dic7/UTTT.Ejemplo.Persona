@@ -274,8 +274,27 @@ namespace UTTT.Ejemplo.Persona
                 _mensaje = "Nombre esta vacio";
                 return false;
             }
+
+            if(_persona.strNombre.Length < 3)
+            {
+                _mensaje = "Nombre debe contener al menos 3 caracteres";
+                return false;
+            }
+
+            if (_persona.strAPaterno.Length < 3)
+            {
+                _mensaje = "APaterno debe contener al menos 3 caracteres";
+                return false;
+            }
+
+            if (_persona.strAMaterno.Length < 3)
+            {
+                _mensaje = "AMaterno debe contener al menos 3 caracteres";
+                return false;
+            }
+
             //Valida Nombre solo contenga letras 
-            if(!Regex.IsMatch(_persona.strNombre, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(_persona.strNombre, @"^[a-zA-Z]+$"))
             {
                 _mensaje = "Formato incorrecto en Nombre";
                 return false;
