@@ -60,20 +60,23 @@ namespace UTTT.Ejemplo.Persona
                         this.session.Parametros.Add("baseEntity", this.baseEntity);
                     }
                     List<CatSexo> lista = dcGlobal.GetTable<CatSexo>().ToList();
-                    CatSexo catTemp = new CatSexo();
-                    catTemp.id = -1;
-                    catTemp.strValor = "Seleccionar";
-                    lista.Insert(0, catTemp);
                     this.ddlSexo.DataTextField = "strValor";
                     this.ddlSexo.DataValueField = "id";
-                    this.ddlSexo.DataSource = lista;
-                    this.ddlSexo.DataBind();
+                    
 
                     //this.ddlSexo.SelectedIndexChanged += new EventHandler(ddlSexo_SelectedIndexChanged);
-                    this.ddlSexo.AutoPostBack = false;
+                    //this.ddlSexo.AutoPostBack = false;
                     if (this.idPersona == 0)
                     {
                         this.lblAccion.Text = "Agregar";
+                        CalendarExtender1.SelectedDate = DateTime.Now;
+
+                        CatSexo catTemp = new CatSexo();
+                        catTemp.id = -1;
+                        catTemp.strValor = "Seleccionar";
+                        lista.Insert(0, catTemp);
+                        this.ddlSexo.DataSource = lista;
+                        this.ddlSexo.DataBind();
                     }
                     else
                     {
@@ -81,11 +84,18 @@ namespace UTTT.Ejemplo.Persona
                         this.txtNombre.Text = this.baseEntity.strNombre;
                         this.txtAPaterno.Text = this.baseEntity.strAPaterno;
                         this.txtAMaterno.Text = this.baseEntity.strAMaterno;
-                        this.txtCURP.Text = this.baseEntity.strCURP;
                         this.txtClaveUnica.Text = this.baseEntity.strClaveUnica;
+                        this.txtCURP.Text = this.baseEntity.strCURP;
+
+                        CalendarExtender1.SelectedDate = this.baseEntity.dteFechaNacimiento.Value.Date;
+
+                        this.ddlSexo.DataSource= lista;
+                        this.ddlSexo.DataBind();
                         this.setItem(ref this.ddlSexo, baseEntity.CatSexo.strValor);
 
                     }
+                    this.ddlSexo.SelectedIndexChanged += new EventHandler(ddlSexo_SelectedIndexChanged);
+                    this.ddlSexo.AutoPostBack = true;
                 }
                 
 
@@ -118,6 +128,10 @@ namespace UTTT.Ejemplo.Persona
                     Page.Validate("vgPersona");
                 }
 
+                //Se obtiene la fecha de nacimiento
+                string date = Request.Form[this.txtFechaNacimiento.UniqueID];
+                DateTime fechaNacimiento = Convert.ToDateTime(date);
+
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();
                 if (this.idPersona == 0)
@@ -128,6 +142,7 @@ namespace UTTT.Ejemplo.Persona
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
                     persona.strCURP = this.txtCURP.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
+                    persona.dteFechaNacimiento = fechaNacimiento;
 
                     string mensaje = string.Empty;
                     //validacion datos en el codigo
@@ -154,6 +169,9 @@ namespace UTTT.Ejemplo.Persona
                     persona.strAPaterno = this.txtAPaterno.Text.Trim();
                     persona.strCURP = this.txtCURP.Text.Trim();
                     persona.idCatSexo = int.Parse(this.ddlSexo.Text);
+
+                    //asigna fecha nacimiento
+                    persona.dteFechaNacimiento = fechaNacimiento; 
 
                     string mensaje = string.Empty;
                     this.lblMensaje.Visible = true; 
@@ -356,6 +374,13 @@ namespace UTTT.Ejemplo.Persona
             }
 
             return true;
+
+            //valida fecha
+            if(_persona.dteFechaNacimiento > DateTime.Now)
+            {
+                _mensaje = "Ingresa una fecha de nacimiento valida";
+                return false;
+            }
         }
         #endregion
         public void ExceptionMessage(Exception e)
@@ -386,5 +411,6 @@ namespace UTTT.Ejemplo.Persona
             }
             this.Response.Redirect("~/errorPage.aspx");
         }
+
     }
 }
