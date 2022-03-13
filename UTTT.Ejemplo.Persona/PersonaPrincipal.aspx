@@ -65,8 +65,10 @@
 
         <div>
         </div>
-
-        <div class="table-responsive">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="table-responsive">
 
             <asp:GridView ID="dgvPersonas" runat="server"
                 AllowPaging="True" AutoGenerateColumns="False" DataSourceID="DataSourcePersona"
@@ -125,6 +127,10 @@
             </asp:GridView>
 
         </div>
+                </div>
+            </div>
+        </div>
+        
         <asp:LinqDataSource ID="DataSourcePersona" runat="server"
             ContextTypeName="UTTT.Ejemplo.Linq.Data.Entity.DcGeneralDataContext"
             OnSelecting="DataSourcePersona_Selecting"
