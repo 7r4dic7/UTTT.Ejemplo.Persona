@@ -84,13 +84,12 @@
         </div>
 
 
-        <div class="container-fluid">
-            <div class="card">
-                <div class="card-card-header"></div>
-                <div class="card-body">
+
+            
+               
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-9 mx-auto">
+                            
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -126,10 +125,10 @@
 </div>
                                     </div>
                                 </div>
-                            </div>
+                           
                             </div>
                             <div class="row">
-                            <div class="col-md-col-9 mx-auto">
+                            
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -155,10 +154,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            
                                 </div>
                             <div class="row">
-                            <div class="col-md-col-9 mx-auto">
+                            
                                 <div class="container-fluid">
                                     <div class="row">
                                     <div class="col-md-12">
@@ -181,12 +180,12 @@
                                     </div>
                                         </div>
                                 </div>
-                            </div>
+                            
                                 </div>
                             <div class="row">
-                            <div class="col-md-9 mx-auto">
+                            
                                 <div class="container-fluid">
-                                    <div class="row">
+                                    <div class="row justify-content-start">
                                         <div class="col-md">
                                             <div class="input-group">
                                             <label class="input-group-text">Fecha de nacimiento:</label>
@@ -197,27 +196,22 @@
                                         </div>
                                             </div>
                                     </div>
-                                </div>
-                            </div>
-                                </div>
-                        
 
-
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="container-fluid">
+                                </div>
+                            
+                                </div>
+                        <br />
+                        <br />
                         <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                <asp:Button class="btn btn-success w-100 p-1" ID="btnAceptar" runat="server" Text="Aceptar"
+                            <div class="col-md-6">
+                                <asp:Button class="btn btn-info w-25 p-1" ID="btnAceptar" runat="server" Text="Aceptar"
                                     OnClick="btnAceptar_Click" ViewStateMode="Disabled" />
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                                <asp:Button class="btn btn-danger w-100 p-1" ID="btnCancelar" runat="server" Text="Cancelar"
+                            <div class="col-md-6">
+                                <asp:Button class="btn btn-danger w-25 p-1" ID="btnCancelar" runat="server" Text="Cancelar"
                                     OnClick="btnCancelar_Click" ViewStateMode="Disabled" />
                             </div>
                         </div>
-                        
                     </div>
                 </div>
                 <div class="container-fluid">
@@ -227,8 +221,8 @@
                             </div>
                         </div>
                 </div>
-            </div>
-        </div>
+            
+        
     </form>
     <scripts>
         <scripts src="Scripts/bootstrap.min.js"></scripts>
