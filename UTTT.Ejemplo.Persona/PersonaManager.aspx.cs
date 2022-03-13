@@ -117,7 +117,7 @@ namespace UTTT.Ejemplo.Persona
                 {
                     return;
                 }
-                if (this.txtClaveUnica.Text.Trim() == String.Empty && this.txtNombre.Text.Trim() == String.Empty &&
+                if (this.txtClaveUnica.Text.Trim() == String.Empty && this.txtFechaNacimiento.Text.Trim() == String.Empty && this.txtNombre.Text.Trim() == String.Empty &&
                     this.txtAPaterno.Text.Trim() == String.Empty && this.txtAMaterno.Text.Trim() == String.Empty && int.Parse(this.ddlSexo.Text) == -1)
                 {
                     this.Response.Redirect("~/PersonaPrincipal.aspx", false);
@@ -130,7 +130,7 @@ namespace UTTT.Ejemplo.Persona
 
                 //Se obtiene la fecha de nacimiento
                 string date = Request.Form[this.txtFechaNacimiento.UniqueID];
-                DateTime fechaNacimiento = Convert.ToDateTime(date);
+                DateTime fechaNacimiento = DateTime.ParseExact(date, "dd/MM/yyyy",null);
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();
@@ -379,6 +379,11 @@ namespace UTTT.Ejemplo.Persona
             if(_persona.dteFechaNacimiento > DateTime.Now)
             {
                 _mensaje = "Ingresa una fecha de nacimiento valida";
+                return false;
+            }
+            if(_persona.dteFechaNacimiento == null)
+            {
+                _mensaje = "Ingresa una fecha de nacimiento";
                 return false;
             }
         }
