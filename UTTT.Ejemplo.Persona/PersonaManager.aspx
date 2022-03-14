@@ -168,11 +168,13 @@
                                         <div class="col-md-7 ms-12 m-auto text-center">
                                             <div class="input-group">
                                             <label class="input-group-text">Fecha de nacimiento:</label>
-                                            <asp:TextBox CssClass="form-control w-100" ID="txtFechaNacimiento" runat="server" Width="250px"></asp:TextBox>
-                                            <asp:ImageButton ID="imgPopup" ImageUrl="~/Images/images.jpg" ImageAlign="Bottom" runat="server" CausesValidation="false" Height="26px" Width="32px" />
+                                            
+                                            <asp:TextBox CssClass="form-control" Width="90%" ID="txtFechaNacimiento" runat="server"></asp:TextBox>
+                                            <asp:ImageButton CssClass="mt-1" ID="imgPopup" ImageUrl="~/Images/images.jpg" ImageAlign="Bottom" runat="server" CausesValidation="false" Height="33px" Width="42px" />
                                             <ajaxToolkit:CalendarExtender ID="CalendarExtender1" PopupButtonID="imgPopup" runat="server" TargetControlID="txtFechaNacimiento" Format="dd/MM/yyyy" />
                                             <asp:RequiredFieldValidator ID="rfvFechaNacimiento" runat="server" ControlToValidate="txtFechaNacimiento" ErrorMessage="*Campo obligatorio" ValidationGroup="vgPersona"></asp:RequiredFieldValidator>
-                                        </div>
+                                       </div>
+                                                
                                             </div>
                         <br />
                         <br />
