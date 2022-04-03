@@ -1,30 +1,25 @@
-﻿#region Using
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using UTTT.Ejemplo.Linq.Data.Entity;
-using System.Data.Linq;
-using System.Linq.Expressions;
-using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
-#endregion
 
 namespace UTTT.Ejemplo.Persona
 {
-    public partial class PersonaPrincipal : System.Web.UI.Page
+    public partial class catDepartamentos : System.Web.UI.Page
     {
-        #region Variables
 
         private SessionManager session = new SessionManager();
-
-        #endregion
-
-        #region Eventos
-
+        private int idPersona = 0;
+        private UTTT.Ejemplo.Linq.Data.Entity.catDepartamento baseEntity;
+        private DataContext dcGlobal = new DcGeneralDataContext();
         protected void Page_Load(object sender, EventArgs e)
         {
             this.session = (SessionManager)this.Session["SessionManager"];
@@ -37,24 +32,13 @@ namespace UTTT.Ejemplo.Persona
             {
                 Response.Buffer = true;
                 DataContext dcTemp = new DcGeneralDataContext();
-                if (!this.IsPostBack)
-                {
-                    List<CatSexo> lista = dcTemp.GetTable<CatSexo>().ToList();
-                    CatSexo catTemp = new CatSexo();
-                    catTemp.id = -1;
-                    catTemp.strValor = "Todos";
-                    lista.Insert(0, catTemp);
-                    this.ddlSexo.DataTextField = "strValor";
-                    this.ddlSexo.DataValueField = "id";
-                    this.ddlSexo.DataSource = lista;
-                    this.ddlSexo.DataBind();
-                }
+                
             }
             catch (Exception _e)
             {
-                var ex = new PersonaManager(); 
+                var ex = new PersonaManager();
                 ex.ExceptionMessage(_e);
-                this.showMessage("Ha ocurrido un problema al cargar la página");               
+                this.showMessage("Ha ocurrido un problema al cargar la página");
             }
         }
 
@@ -74,12 +58,12 @@ namespace UTTT.Ejemplo.Persona
         {
             try
             {
-                this.session.Pantalla = "~/PersonaManager.aspx";
+                this.session.Pantalla = "~/DepartamentosManager.aspx";
                 Hashtable parametrosRagion = new Hashtable();
                 parametrosRagion.Add("idPersona", "0");
                 this.session.Parametros = parametrosRagion;
                 this.Session["SessionManager"] = this.session;
-                this.Response.Redirect(this.session.Pantalla, false);               
+                this.Response.Redirect(this.session.Pantalla, false);
             }
             catch (Exception _e)
             {
@@ -93,28 +77,22 @@ namespace UTTT.Ejemplo.Persona
             {
                 DataContext dcConsulta = new DcGeneralDataContext();
                 bool nombreBool = false;
-                bool sexoBool = false;
-                if (!this.txtNombre.Text.Equals(String.Empty))
+                if (!this.txtValor.Text.Equals(String.Empty))
                 {
                     nombreBool = true;
                 }
-                if (this.ddlSexo.Text != "-1")
-                {
-                    sexoBool = true;
-                }
-
-                Expression<Func<UTTT.Ejemplo.Linq.Data.Entity.Persona, bool>> 
+                Expression<Func<UTTT.Ejemplo.Linq.Data.Entity.catDepartamento, bool>>
                     predicate =
                     (c =>
-                    ((sexoBool) ? c.idCatSexo == int.Parse(this.ddlSexo.Text) : true) &&             
-                    ((nombreBool) ? (((nombreBool) ? c.strNombre.Contains(this.txtNombre.Text.Trim()) : false)) : true)
+                    
+                    ((nombreBool) ? (((nombreBool) ? c.strValor.Contains(this.txtValor.Text.Trim()) : false)) : true)
                     );
 
                 predicate.Compile();
 
-                List<UTTT.Ejemplo.Linq.Data.Entity.Persona> listaPersona =
-                    dcConsulta.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().Where(predicate).ToList();
-                e.Result = listaPersona;        
+                List<UTTT.Ejemplo.Linq.Data.Entity.catDepartamento> listaDepartamento =
+                    dcConsulta.GetTable<UTTT.Ejemplo.Linq.Data.Entity.catDepartamento>().Where(predicate).ToList();
+                e.Result = listaDepartamento;
             }
             catch (Exception _e)
             {
@@ -122,7 +100,7 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        protected void dgvPersonas_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void dgvDepartamentos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
@@ -135,9 +113,6 @@ namespace UTTT.Ejemplo.Persona
                     case "Eliminar":
                         this.eliminar(idPersona);
                         break;
-                    case "Direccion":
-                        this.direccion(idPersona);
-                        break;
                 }
             }
             catch (Exception _e)
@@ -146,20 +121,16 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        #endregion 
-
-        #region Metodos
-
-        private void editar(int _idPersona)
+        private void editar(int _idDepartamento)
         {
             try
             {
                 Hashtable parametrosRagion = new Hashtable();
-                parametrosRagion.Add("idPersona", _idPersona.ToString());
+                parametrosRagion.Add("idDepartamento", _idDepartamento.ToString());
                 this.session.Parametros = parametrosRagion;
                 this.Session["SessionManager"] = this.session;
                 this.session.Pantalla = String.Empty;
-                this.session.Pantalla = "~/PersonaManager.aspx";
+                this.session.Pantalla = "~/DepartamentosManager.aspx";
                 this.Response.Redirect(this.session.Pantalla, false);
 
             }
@@ -169,30 +140,17 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        private void eliminar(int _idPersona)
+        private void eliminar(int _idDepartamento)
         {
             try
             {
                 DataContext dcDelete = new DcGeneralDataContext();
-                DataContext dcDeleteUser = new DcGeneralDataContext();
-                Linq.Data.Entity.Usuario usuario = dcDeleteUser.GetTable<Linq.Data.Entity.Usuario>().FirstOrDefault(u => u.idPersona == _idPersona);
-                UTTT.Ejemplo.Linq.Data.Entity.Persona persona = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().First(
-                    c => c.id == _idPersona);
-                if(session.IdPersona != persona.id)
-                {
-                    dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
-                    dcDeleteUser.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Usuario>().DeleteOnSubmit(usuario);
-                    dcDelete.SubmitChanges();
-                    dcDeleteUser.SubmitChanges();
-                    this.showMessage("El registro se elimino correctamente.");
-                    this.DataSourcePersona.RaiseViewChanged();
-                }
-                else
-                {
-                    this.showMessage("No puedes eliminar al empleado ligado al usuario activo");
-                    return;
-                }
-                              
+                UTTT.Ejemplo.Linq.Data.Entity.catDepartamento departamento = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.catDepartamento>().First(
+                    c => c.id == _idDepartamento);
+                dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.catDepartamento>().DeleteOnSubmit(departamento);
+                dcDelete.SubmitChanges();
+                this.showMessage("El registro se elimino correctamente.");
+                this.DataSourcePersona.RaiseViewChanged();
             }
             catch (Exception _e)
             {
@@ -200,25 +158,10 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        private void direccion(int _idPersona)
+        protected void buscarTextBox(object sender, EventArgs e)
         {
-            try
-            {
-                Hashtable parametrosRagion = new Hashtable();
-                parametrosRagion.Add("idPersona", _idPersona.ToString());
-                this.session.Parametros = parametrosRagion;
-                this.Session["SessionManager"] = this.session;
-                this.session.Pantalla = String.Empty;
-                this.session.Pantalla = "~/DireccionManager.aspx";
-                this.Response.Redirect(this.session.Pantalla, false);
-            }
-            catch (Exception _e)
-            {
-                throw _e;
-            }
+            DataSourcePersona.RaiseViewChanged();
         }
-
-        #endregion
 
         public void onTxtNombreTextChange(object sender, EventArgs e)
         {
@@ -231,11 +174,6 @@ namespace UTTT.Ejemplo.Persona
 
                 this.showMessage("Ha ocurrido un problema al buscar");
             }
-        }
-
-        protected void buscarTextBox(object sender, EventArgs e)
-        {
-            this.DataSourcePersona.RaiseViewChanged();
         }
 
         protected void btnEmpleado_Click(object sender, EventArgs e)
@@ -294,5 +232,6 @@ namespace UTTT.Ejemplo.Persona
                 this.showMessage("Ha ocurrido un fallo");
             }
         }
+
     }
 }

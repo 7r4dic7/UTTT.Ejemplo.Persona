@@ -1,35 +1,26 @@
-﻿#region Using
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using UTTT.Ejemplo.Linq.Data.Entity;
-using System.Data.Linq;
-using System.Linq.Expressions;
-using System.Collections;
 using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
 
-#endregion
-
 namespace UTTT.Ejemplo.Persona
 {
-    public partial class DireccionManager : System.Web.UI.Page
+    public partial class Mantenimientos : System.Web.UI.Page
     {
-        #region Variables
-
         private SessionManager session = new SessionManager();
         private int idPersona = 0;
-        private UTTT.Ejemplo.Linq.Data.Entity.Persona baseEntity;
+        private UTTT.Ejemplo.Linq.Data.Entity.Equipo baseEntity;
         private DataContext dcGlobal = new DcGeneralDataContext();
         private int tipoAccion = 0;
         private int idDireccion = 0;
-
-        #endregion
-
-        #region Eventos
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,9 +42,9 @@ namespace UTTT.Ejemplo.Persona
 
                 if (!this.IsPostBack)
                 {
-                    this.baseEntity = dcGlobal.GetTable<Linq.Data.Entity.Persona>().First(c => c.id == this.idPersona);
-                    this.txtPersona.Text = this.baseEntity.strNombre + " " + this.baseEntity.strAPaterno + "  " + this.baseEntity.strAMaterno;
-                    if (this.baseEntity.Direccion.Count() == 0)
+                    this.baseEntity = dcGlobal.GetTable<Linq.Data.Entity.Equipo>().First(c => c.id == this.idPersona);
+                    this.txtMantenimientos.Text = this.baseEntity.strNombre;
+                    if (this.baseEntity.Mantenimientos.Count() == 0)
                     {
                         this.lblAccion.Text = "Agregar";
                     }
@@ -71,26 +62,26 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        protected void LinqDataSourceDireccion_Selecting(object sender, LinqDataSourceSelectEventArgs e)
+        protected void LinqDataSourceMantenimientos_Selecting(object sender, LinqDataSourceSelectEventArgs e)
         {
             try
             {
-                DataContext dcConsulta = new DcGeneralDataContext();               
-                Expression<Func<UTTT.Ejemplo.Linq.Data.Entity.Direccion, bool>>
-                    predicate = c => c.idPersona == this.idPersona;
+                DataContext dcConsulta = new DcGeneralDataContext();
+                Expression<Func<UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos, bool>>
+                    predicate = c => c.idEquipo == this.idPersona;
                 predicate.Compile();
-                List<UTTT.Ejemplo.Linq.Data.Entity.Direccion> listaPersona =
-                    dcConsulta.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Direccion>().Where(predicate).ToList();
-                e.Result = listaPersona;
+                List<UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos> listaMantenimientos =
+                    dcConsulta.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos>().Where(predicate).ToList();
+                e.Result = listaMantenimientos;
             }
             catch (Exception _e)
             {
                 this.showMessage("Ha ocurrido un problema al cargar la página");
-                this.Response.Redirect("~/PersonaPrincipal.aspx", false);
+                this.Response.Redirect("~/EquiposPrincipal.aspx", false);
             }
         }
 
-        protected void dgvDireccion_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void dgvMantenimientos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
@@ -103,7 +94,7 @@ namespace UTTT.Ejemplo.Persona
                     case "Eliminar":
                         this.eliminar(idPersona);
                         break;
-                    
+
                 }
             }
             catch (Exception _e)
@@ -116,7 +107,7 @@ namespace UTTT.Ejemplo.Persona
         {
             try
             {
-                this.session.Pantalla = "~/DireccionExtraManager.aspx";
+                this.session.Pantalla = "~/MantenimientosManager.aspx";
                 Hashtable parametrosRagion = new Hashtable();
                 parametrosRagion.Add("idPersona", this.idPersona.ToString());
                 parametrosRagion.Add("idDireccion", "0");
@@ -131,11 +122,6 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-
-        #endregion
-
-        #region Metodos
-
         private void editar(int _direccion)
         {
             try
@@ -146,7 +132,7 @@ namespace UTTT.Ejemplo.Persona
                 this.session.Parametros = parametrosRagion;
                 this.Session["SessionManager"] = this.session;
                 this.session.Pantalla = String.Empty;
-                this.session.Pantalla = "~/DireccionExtraManager.aspx";
+                this.session.Pantalla = "~/MantenimientosManager.aspx";
                 this.Response.Redirect(this.session.Pantalla, false);
 
             }
@@ -161,9 +147,9 @@ namespace UTTT.Ejemplo.Persona
             try
             {
                 DataContext dcDelete = new DcGeneralDataContext();
-                UTTT.Ejemplo.Linq.Data.Entity.Direccion direccion = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Direccion>().First(
+                UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos mantenimientos = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos>().First(
                     c => c.id == _idDireccion);
-                dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Direccion>().DeleteOnSubmit(direccion);
+                dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos>().DeleteOnSubmit(mantenimientos);
                 dcDelete.SubmitChanges();
                 this.showMessage("El registro se elimino correctamente.");
                 this.LinqDataSourceDireccion.RaiseViewChanged();
@@ -174,12 +160,67 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-
-        #endregion
-
         protected void btnRegresar_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/PersonaPrincipal.aspx", false);
+            Response.Redirect("~/EquipoPrincipal.aspx", false);
         }
+
+        protected void btnEmpleado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.session.Pantalla = "~/PersonaPrincipal.aspx";
+                this.Session["SessionManager"] = this.session;
+                this.Response.Redirect(this.session.Pantalla, false);
+            }
+            catch (Exception _e)
+            {
+                this.showMessage("Ha ocurrido un error");
+            }
+        }
+
+        protected void btnCatDepartamento_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.session.Pantalla = "~/catDepartamentos.aspx";
+                this.Session["SessionManager"] = this.session;
+                this.Response.Redirect(this.session.Pantalla, false);
+            }
+            catch (Exception _e)
+            {
+                this.showMessage("Ha ocurrido un error");
+            }
+        }
+
+        protected void btnEquipo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.session.Pantalla = "~/EquipoPrincipal.aspx";
+                this.Session["SessionManager"] = this.session;
+                this.Response.Redirect(this.session.Pantalla, false);
+            }
+            catch (Exception _e)
+            {
+
+                this.showMessage("Ha ocurrido un error");
+            }
+        }
+
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.session.Pantalla = "~/Login.aspx";
+                this.Session["SessionManager"] = null;
+                this.Response.Redirect(this.session.Pantalla, false);
+            }
+            catch (Exception)
+            {
+                this.showMessage("Ha ocurrido un fallo");
+            }
+        }
+
     }
 }

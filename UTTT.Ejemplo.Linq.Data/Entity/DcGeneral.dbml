@@ -1,19 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PersonaEjemploDB" Class="DcGeneralDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=PersonaEjemploDB.mssql.somee.com;Initial Catalog=PersonaEjemploDB;Persist Security Info=True;User ID=osvaldo17_SQLLogin_1" SettingsObjectName="UTTT.Ejemplo.Linq.Data.Properties.Settings" SettingsPropertyName="PersonaConnectionString1" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Persona" Member="Persona">
-    <Type Name="Persona">
+  <Table Name="dbo.catDepartamento" Member="catDepartamento">
+    <Type Name="catDepartamento">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="strClaveUnica" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="strNombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="strAPaterno" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="strAMaterno" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="idCatSexo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="dteFechaNacimiento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="intNumHermano" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="idCatEstadoCivil" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="strCURP" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Association Name="Persona_Direccion" Member="Direccion" ThisKey="id" OtherKey="idPersona" Type="Direccion" />
-      <Association Name="CatSexo_Persona" Member="CatSexo" ThisKey="idCatSexo" OtherKey="id" Type="CatSexo" IsForeignKey="true" />
+      <Column Name="strDescripcion" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="strValor" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="catDepartamento_Persona" Member="Persona" ThisKey="id" OtherKey="idDepartamento" Type="Persona" />
+      <Association Name="catDepartamento_Equipo" Member="Equipo" ThisKey="id" OtherKey="idDepartamento" Type="Equipo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.catEstado" Member="catEstado">
+    <Type Name="catEstado">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="strValor" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="strDescripcion" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="catEstado_Usuario" Member="Usuario" ThisKey="id" OtherKey="idEstado" Type="Usuario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.catPerfil" Member="catPerfil">
+    <Type Name="catPerfil">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="strValor" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="strDescripcion" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="catPerfil_Usuario" Member="Usuario" ThisKey="id" OtherKey="idPerfil" Type="Usuario" />
     </Type>
   </Table>
   <Table Name="dbo.CatSexo" Member="CatSexo">
@@ -32,6 +41,58 @@
       <Column Name="strNumero" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="strColonia" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Persona_Direccion" Member="Persona" ThisKey="idPersona" OtherKey="id" Type="Persona" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Mantenimientos" Member="Mantenimientos">
+    <Type Name="Mantenimientos">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEquipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dteFechaMantenimiento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="strObservaciones" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Equipo_Mantenimientos" Member="Equipo" ThisKey="idEquipo" OtherKey="id" Type="Equipo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Persona" Member="Persona">
+    <Type Name="Persona">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="strClaveUnica" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="strNombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="strAPaterno" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="strAMaterno" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="idCatSexo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="dteFechaNacimiento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="intNumHermano" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="idCatEstadoCivil" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="strCURP" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="idDepartamento" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Persona_Direccion" Member="Direccion" ThisKey="id" OtherKey="idPersona" Type="Direccion" />
+      <Association Name="Persona_Usuario" Member="Usuario" ThisKey="id" OtherKey="idPersona" Type="Usuario" />
+      <Association Name="CatSexo_Persona" Member="CatSexo" ThisKey="idCatSexo" OtherKey="id" Type="CatSexo" IsForeignKey="true" />
+      <Association Name="catDepartamento_Persona" Member="catDepartamento" ThisKey="idDepartamento" OtherKey="id" Type="catDepartamento" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Equipo" Member="Equipo">
+    <Type Name="Equipo">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="strNombre" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="strDescripcion" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="dteFechaCompra" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="idDepartamento" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Equipo_Mantenimientos" Member="Mantenimientos" ThisKey="id" OtherKey="idEquipo" Type="Mantenimientos" />
+      <Association Name="catDepartamento_Equipo" Member="catDepartamento" ThisKey="idDepartamento" OtherKey="id" Type="catDepartamento" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuario" Member="Usuario">
+    <Type Name="Usuario">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPersona" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="strNombreUsuario" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="strPassword" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="idEstado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idPerfil" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="catEstado_Usuario" Member="catEstado" ThisKey="idEstado" OtherKey="id" Type="catEstado" IsForeignKey="true" />
+      <Association Name="catPerfil_Usuario" Member="catPerfil" ThisKey="idPerfil" OtherKey="id" Type="catPerfil" IsForeignKey="true" />
+      <Association Name="Persona_Usuario" Member="Persona" ThisKey="idPersona" OtherKey="id" Type="Persona" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

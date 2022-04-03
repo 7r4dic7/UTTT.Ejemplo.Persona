@@ -7,11 +7,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script type="text/javascript">
         function validaNumeros(evt) {
-            //Valida qque solo se ingresen numeros a la caja de texto
+            //Valida que solo se ingresen numeros a la caja de texto
             var code = (evt.which) ? evt.which : evt.keycode;
             if (code == 8) {
                 return true;
@@ -64,6 +65,23 @@
 <body>
 
     <form id="form1" runat="server">
+        <div class="container">
+            <nav class="navbar fixed-top navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnCatdepartamento" onclick="btnCatDepartamento_Click" Text="catDepartamento"></asp:Button>
+                    <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEmpleado" onclick="btnEmpleado_Click" Text="Empleado"></asp:Button>
+                    <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEquipo" onclick="btnEquipo_Click" Text="Equipo"></asp:Button>
+                    <form class="d-flex">
+                        <asp:HyperLink runat="server" Cssclass="navbar-brand justify-content-end" id="btnSalir" href="#" onclick="btnSalir_Click">
+                            <img src="Images/logout-blue.png" alt="" width="30" height="24" />
+                            Salir
+                        </asp:HyperLink>
+                    </form>
+
+                </div>
+            </nav>
+           
+        </div>
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
         <div class="container-fluid justify-content-center" style="font-family: Arial; font-size: medium; font-weight: bold">
             <div class="row">
@@ -198,6 +216,8 @@
     </form>
     <scripts>
         <scripts src="Scripts/bootstrap.min.js"></scripts>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     </scripts>
 </body>
 </html>

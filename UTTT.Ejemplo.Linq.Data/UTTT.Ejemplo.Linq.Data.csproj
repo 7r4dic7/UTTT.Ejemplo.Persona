@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Entity\catDepartamento.cs" />
+    <Compile Include="Entity\catEstado.cs" />
+    <Compile Include="Entity\catPerfil.cs" />
     <Compile Include="Entity\CatSexo.cs" />
     <Compile Include="Entity\DcGeneral.designer.cs">
       <AutoGen>True</AutoGen>
@@ -52,7 +55,10 @@
       <DependentUpon>DcGeneral.dbml</DependentUpon>
     </Compile>
     <Compile Include="Entity\Direccion.cs" />
+    <Compile Include="Entity\Equipo.cs" />
+    <Compile Include="Entity\Mantenimientos.cs" />
     <Compile Include="Entity\Persona.cs" />
+    <Compile Include="Entity\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

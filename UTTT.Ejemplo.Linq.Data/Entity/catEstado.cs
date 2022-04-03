@@ -5,11 +5,11 @@ using System.Text;
 
 namespace UTTT.Ejemplo.Linq.Data.Entity
 {
-    public partial class Persona
+    public partial class catEstado
     {
-        public static implicit operator Persona(catDepartamento v)
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            return this.strValor;
         }
     }
 }
