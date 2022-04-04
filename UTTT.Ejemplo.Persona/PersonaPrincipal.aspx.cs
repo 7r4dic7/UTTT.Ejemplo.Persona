@@ -20,15 +20,14 @@ namespace UTTT.Ejemplo.Persona
         #region Variables
 
         private SessionManager session = new SessionManager();
-
+        private string strUsuario = string.Empty;
         #endregion
 
         #region Eventos
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.session = (SessionManager)this.Session["SessionManager"];
-            Response.Buffer = true;
+            
             if (this.session == null)
             {
                 this.Response.Redirect("~/Login.aspx");
@@ -37,6 +36,9 @@ namespace UTTT.Ejemplo.Persona
             try
             {
                 Response.Buffer = true;
+                this.session = (SessionManager)this.Session["SessionManager"];
+                this.strUsuario = (string)(this.session.Parametros["strNombrePersona"] != null ?
+                this.session.Parametros["strNombrePersona"] : 0);
                 DataContext dcTemp = new DcGeneralDataContext();
                 if (!this.IsPostBack)
                 {
@@ -179,20 +181,21 @@ namespace UTTT.Ejemplo.Persona
                 Linq.Data.Entity.Usuario usuario = dcDeleteUser.GetTable<Linq.Data.Entity.Usuario>().FirstOrDefault(u => u.idPersona == _idPersona);
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().First(
                     c => c.id == _idPersona);
-                if(session.StrNombrePersona != usuario.strNombreUsuario && usuario!= null)
+                if (usuario == null)
+                {
+                    dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
+                    dcDelete.SubmitChanges();
+                    this.showMessage("El registro se elimino correctamente.");
+                    this.DataSourcePersona.RaiseViewChanged();
+                }
+                else if (!usuario.Equals(null) && strUsuario != usuario.strNombreUsuario)
                 {
                     dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
                     dcDeleteUser.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Usuario>().DeleteOnSubmit(usuario);
-                    
+
                     dcDeleteUser.SubmitChanges();
                     dcDelete.SubmitChanges();
-                    
-                    this.showMessage("El registro se elimino correctamente.");
-                    this.DataSourcePersona.RaiseViewChanged();
-                }else if (usuario == null)
-                {
-                    dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
-                    dcDelete.SubmitChanges();
+
                     this.showMessage("El registro se elimino correctamente.");
                     this.DataSourcePersona.RaiseViewChanged();
                 }
@@ -201,8 +204,8 @@ namespace UTTT.Ejemplo.Persona
                     this.showMessage("No puedes eliminar al empleado ligado al usuario activo");
                     return;
                 }
-                              
-            }
+
+                } 
             catch (Exception _e)
             {
                 throw _e;

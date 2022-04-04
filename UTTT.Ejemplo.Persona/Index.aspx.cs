@@ -17,16 +17,20 @@ namespace UTTT.Ejemplo.Persona
         private int idPersona = 0;
         private UTTT.Ejemplo.Linq.Data.Entity.Persona baseEntity;
         private DataContext dcGlobal = new DcGeneralDataContext();
-
+        private string strUsuario = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.session = (SessionManager)this.Session["SessionManager"];
             if (this.session == null)
             {
                 this.Response.Redirect("~/Login.aspx");
                 return;
             }
+            Response.Buffer = true;
+            this.session = (SessionManager)this.Session["SessionManager"];
+            this.strUsuario = (string)(this.session.Parametros["strNombrePersona"] != null ?
+                    this.session.Parametros["strNombrePersona"] : 0);
+            
         }
 
         protected void btnEmpleado_Click(object sender, EventArgs e)

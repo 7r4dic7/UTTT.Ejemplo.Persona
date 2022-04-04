@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -90,7 +91,15 @@ namespace UTTT.Ejemplo.Persona
 
                 //Se obtiene la fecha de mant
                 string date = Request.Form[this.txtFechaMantenimiento.UniqueID];
-                DateTime fechaMantenimiento = DateTime.ParseExact(date, "dd/MM/yyyy", null);
+                DateTime dt;
+                bool isValid = DateTime.TryParseExact(date, "dd/MM/yyyy", new CultureInfo("es-MX"), DateTimeStyles.None, out dt);
+                if (!isValid)
+                {
+                    this.lblMensaje.Text = "La fecha no tiene el formato valido";
+                    this.lblMensaje.Visible = true;
+                    return;
+                }
+                DateTime fechaMantenimiento = DateTime.Parse(date, CultureInfo.CreateSpecificCulture("es-MX"));
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Mantenimientos mantenimientos = new Linq.Data.Entity.Mantenimientos();

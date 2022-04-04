@@ -14,6 +14,7 @@ using UTTT.Ejemplo.Persona.Control;
 using UTTT.Ejemplo.Persona.Control.Ctrl;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 #endregion
 
@@ -130,7 +131,16 @@ namespace UTTT.Ejemplo.Persona
 
                 //Se obtiene la fecha de nacimiento
                 string date = Request.Form[this.txtFechaNacimiento.UniqueID];
-                DateTime fechaNacimiento = DateTime.ParseExact(date, "dd/MM/yyyy",null);
+                //DateTime fechaNacimiento = DateTime.ParseExact(date, "dd/MM/yyyy",null);
+                DateTime dt;
+                bool isValid = DateTime.TryParseExact(date, "dd/MM/yyyy", new CultureInfo("es-MX"), DateTimeStyles.None, out dt);
+                if (!isValid)
+                {
+                    this.lblMensaje.Text = "La fecha no tiene el formato valido";
+                    this.lblMensaje.Visible = true;
+                    return;
+                }
+                DateTime fechaNacimiento = DateTime.Parse(date, CultureInfo.CreateSpecificCulture("es-MX"));
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = new Linq.Data.Entity.Persona();

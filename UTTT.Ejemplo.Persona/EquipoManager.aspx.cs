@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
@@ -55,6 +56,7 @@ namespace UTTT.Ejemplo.Persona
                     List<catDepartamento> lista = dcGlobal.GetTable<catDepartamento>().ToList();
                     this.ddlDepartamneto.DataTextField = "strValor";
                     this.ddlDepartamneto.DataValueField = "id";
+
 
 
                     //this.ddlSexo.SelectedIndexChanged += new EventHandler(ddlSexo_SelectedIndexChanged);
@@ -118,7 +120,15 @@ namespace UTTT.Ejemplo.Persona
 
                 //Se obtiene la fecha de nacimiento
                 string date = Request.Form[this.txtFechaCompra.UniqueID];
-                DateTime fechaCompra = DateTime.ParseExact(date, "dd/MM/yyyy", null);
+                DateTime dt;
+                bool isValid = DateTime.TryParseExact(date, "dd/MM/yyyy", new CultureInfo("es-MX"), DateTimeStyles.None, out dt);
+                if (!isValid)
+                {
+                    this.lblMensaje.Text = "La fecha no tiene el formato valido";
+                    this.lblMensaje.Visible = true;
+                    return;
+                }
+                DateTime fechaCompra = DateTime.Parse(date, CultureInfo.CreateSpecificCulture("es-MX"));
 
                 DataContext dcGuardar = new DcGeneralDataContext();
                 UTTT.Ejemplo.Linq.Data.Entity.Equipo equipo = new Linq.Data.Entity.Equipo();
