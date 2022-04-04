@@ -43,7 +43,8 @@ namespace UTTT.Ejemplo.Persona
                 }
                 this.session.Pantalla = "~/Index.aspx";
                 Hashtable parametrosRagion = new Hashtable();
-                parametrosRagion.Add("strNombreUsuario", auth.strNombreUsuario);
+                parametrosRagion.Add("idPersona", auth.idPersona);
+                parametrosRagion.Add("strNombrePersona", auth.strNombreUsuario);
                 this.session.Parametros = parametrosRagion;
                 this.Session["SessionManager"] = this.session;
                 this.Response.Redirect(this.session.Pantalla,false);

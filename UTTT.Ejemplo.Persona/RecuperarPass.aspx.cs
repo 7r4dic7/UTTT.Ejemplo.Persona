@@ -55,9 +55,24 @@ namespace UTTT.Ejemplo.Persona
                     this.txtUsuario.ReadOnly = true;
 
                 }
-                else 
-                {
+            }
+            catch (Exception ex)
+            {
 
+            }
+        }
+
+        protected void btnPass_Click(object sender, EventArgs e)
+        {
+            DataContext dcGuardar = new DcGeneralDataContext();
+            if (!Page.IsValid)
+            {
+                return;
+            }
+            try
+            {
+                var userEA = dcGlobal.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Usuario>().FirstOrDefault(p => p.strNombreUsuario.Trim().Replace(" ", "").Equals(this.txtUsuario.Text.Trim().Replace(" ", "")));
+   
                     if (!ComprobarContraseña())
                     {
                         this.Response.Redirect("~/Login.aspx", false);
@@ -90,7 +105,7 @@ namespace UTTT.Ejemplo.Persona
                     this.showMessage("Contraseña Actualizada Correctamente");
                     this.Response.Redirect("~/Login.aspx", false);
 
-                }
+                
 
 
             }
@@ -132,7 +147,7 @@ namespace UTTT.Ejemplo.Persona
                 activarElementos();
                 return false;
             }
-            if (!Regex.IsMatch(_persona.strPassword, @"^[a-zA-Z]\w{8,24}$"))
+            if (!Regex.IsMatch(_persona.strPassword, @"^[a-zA-Z0-9]\w{7,23}$"))
             {
                 _mensaje = "La contraseña debe tener al entre 8 y 24 caracteres y solo puede contener letras y numeros";
                 this.lblMensaje.Visible = true;
@@ -173,11 +188,10 @@ namespace UTTT.Ejemplo.Persona
         public void activarElementos()
         {
             this.txtUsuario.ReadOnly = true;
-            //this.lblPass.Visible = true;
             this.txtPassword.Visible = true;
-            //this.lblPass2.Visible = true;
             this.txtConfPassword.Visible = true;
-            this.btnVerificar.Text = "Cambiar Contraseña";
+            this.btnVerificar.Visible = false;
+            this.btnPass.Visible = true;
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)

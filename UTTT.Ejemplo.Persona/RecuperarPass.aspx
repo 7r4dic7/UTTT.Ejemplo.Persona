@@ -10,7 +10,7 @@
         function soloLetras(e) {
             var key = e.keyCode || e.which,
                 tecla = String.fromCharCode(key).toLowerCase(),
-                letras = " áéíóúabcdefghijklmnñopqrstuvwxyz1234567890",
+                letras = "áéíóúabcdefghijklmnñopqrstuvwxyz1234567890",
                 especiales = [8, 37, 39, 46],
                 tecla_especial = false;
 
@@ -38,7 +38,7 @@
               <div class="col-md-7 ms-12 m-auto text-center">
                     <div class="input-group">
                         <asp:label runat="server" class="input-group-text">Usuario:</asp:label>
-                        <asp:TextBox CssClass="form-control w-100" ID="txtUsuario" runat="server" Width="250px" ViewStateMode="Disabled" ReadOnly="false"></asp:TextBox>
+                        <asp:TextBox CssClass="form-control w-100" ID="txtUsuario" runat="server" Width="250px" ViewStateMode="Disabled" onkeypress="return soloLetras(event);"></asp:TextBox>
 
                         <asp:RequiredFieldValidator ID="rfvUsuario" runat="server" ControlToValidate="txtUsuario" ErrorMessage="*Usuario es obligatorio" ValidationGroup="vgRecP"></asp:RequiredFieldValidator>
           </div>
@@ -63,6 +63,10 @@
               <div class="col-md-7 ms-12 m-auto text-center">
             <asp:Button class="btn btn-success w-50 p-1" ID="btnVerificar" runat="server" Text="Verificar"
                 OnClick="btnVerificar_Click" ViewStateMode="Disabled" />
+                  </div>
+              <div class="col-md-7 ms-12 m-auto text-center">
+            <asp:Button class="btn btn-success w-50 p-1" ID="btnPass" runat="server" Text="Cambiar contraseña"
+                OnClick="btnPass_Click" ViewStateMode="Disabled" visible="false"/>
                   </div>
               <div class="col-md-7 ms-12 m-auto text-center">
                   <asp:Button class="btn btn-warning w-50 p-1" ID="btnCancelar" runat="server" Text="Cancelar"

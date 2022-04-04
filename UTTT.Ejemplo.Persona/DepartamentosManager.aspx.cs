@@ -24,12 +24,11 @@ namespace UTTT.Ejemplo.Persona
         private static string eMessage = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.session = (SessionManager)this.Session["SessionManager"];
-            if (this.session == null)
-            {
-                this.Response.Redirect("~/Login.aspx");
-                return;
-            }
+            //if (this.session == null)
+            //{
+            //    this.Response.Redirect("~/Login.aspx");
+            //    return;
+            //}
             try
             {
                 this.Response.Buffer = true;
@@ -62,8 +61,6 @@ namespace UTTT.Ejemplo.Persona
                         this.lblAccion.Text = "Editar";
                         this.txtValor.Text = this.baseEntity.strValor;
                         this.txtDescripcion.Text = this.baseEntity.strDescripcion;
-                     
-
                     }
                 }
             }

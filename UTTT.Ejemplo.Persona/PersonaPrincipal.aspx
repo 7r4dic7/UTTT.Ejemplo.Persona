@@ -12,25 +12,26 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 </head>
 <body>
+    
+    
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
         <div class="container">
             <nav class="navbar fixed-top navbar-dark bg-dark">
-                <div class="container-fluid">
+                <div class="container-fluid d-flex">
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnCatdepartamento" onclick="btnCatDepartamento_Click" Text="catDepartamento"></asp:Button>
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEmpleado" onclick="btnEmpleado_Click" Text="Empleado"></asp:Button>
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEquipo" onclick="btnEquipo_Click" Text="Equipo"></asp:Button>
-                    <form class="d-flex">
-                        <asp:HyperLink runat="server" Cssclass="navbar-brand justify-content-end" id="btnSalir" href="#" onclick="btnSalir_Click">
-                            <img src="Images/logout-blue.png" alt="" width="30" height="24" />
-                            Salir
-                        </asp:HyperLink>
-                    </form>
+                    <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnSalir" onclick="btnSalir_Click" Text="Salir"></asp:Button>
 
                 </div>
             </nav>
-           
-        </div>
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+           <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        
         <div style="color: #000000; font-size: medium; font-family: Arial; font-weight: bold" class="container-fluid">
             <div class="row">
                 <div class="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Persona</div>
@@ -96,6 +97,8 @@
                 ViewStateMode="Disabled">
                 <AlternatingRowStyle BackColor="#F7F7F7" />
                 <Columns>
+                    <asp:BoundField DataField="id" HeaderText="Id"
+                        ReadOnly="True" SortExpression="id" />
                     <asp:BoundField DataField="strClaveUnica" HeaderText="Clave Unica"
                         ReadOnly="True" SortExpression="strClaveUnica" />
                     <asp:BoundField DataField="strNombre" HeaderText="Nombre" ReadOnly="True"
@@ -124,14 +127,14 @@
                         <ItemStyle HorizontalAlign="Center" Width="50px" />
                     </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Direccion">
+                    <%--<asp:TemplateField HeaderText="Direccion">
                         <ItemTemplate>
                             <asp:ImageButton runat="server" ID="imgDireccion" CommandName="Direccion" CommandArgument='<%#Bind("id") %>' ImageUrl="~/Images/editrecord_16x16.png" />
                         </ItemTemplate>
                         <HeaderStyle HorizontalAlign="Center" />
                         <ItemStyle HorizontalAlign="Center" Width="50px" />
 
-                    </asp:TemplateField>
+                    </asp:TemplateField>--%>
                 </Columns>
                 <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
                 <HeaderStyle BackColor="#4A3C8C" Font-Bold="True" ForeColor="#F7F7F7" />
@@ -148,11 +151,13 @@
                 </div>
             </div>
         </div>
+        </div>
+        
         
         <asp:LinqDataSource ID="DataSourcePersona" runat="server"
             ContextTypeName="UTTT.Ejemplo.Linq.Data.Entity.DcGeneralDataContext"
             OnSelecting="DataSourcePersona_Selecting"
-            Select="new (strNombre, strAPaterno, strAMaterno, CatSexo, strClaveUnica,id,dteFechaNacimiento)"
+            Select="new (id,strNombre, strAPaterno, strAMaterno, CatSexo, strClaveUnica,id,dteFechaNacimiento)"
             TableName="Persona" EntityTypeName="">
         </asp:LinqDataSource>
     </form>

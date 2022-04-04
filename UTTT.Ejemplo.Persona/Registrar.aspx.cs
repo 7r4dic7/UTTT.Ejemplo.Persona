@@ -258,7 +258,7 @@ namespace UTTT.Ejemplo.Persona
                 this.lblMensaje.Visible = true;
                 return false;
             }
-            if (!Regex.IsMatch(_usuario.strPassword, @"^[a-zA-Z]\w{8,24}$"))
+            if (!Regex.IsMatch(_usuario.strPassword, @"^[a-zA-Z0-9]\w{7,23}$"))
             {
                 _mensaje = "La contraseña debe tener al entre 8 y 24 caracteres y solo puede contener letras y numeros";
                 this.lblMensaje.Visible = true;

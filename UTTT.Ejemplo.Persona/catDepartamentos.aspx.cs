@@ -121,12 +121,12 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        private void editar(int _idDepartamento)
+        private void editar(int _idPersona)
         {
             try
             {
                 Hashtable parametrosRagion = new Hashtable();
-                parametrosRagion.Add("idDepartamento", _idDepartamento.ToString());
+                parametrosRagion.Add("idPersona", _idPersona.ToString());
                 this.session.Parametros = parametrosRagion;
                 this.Session["SessionManager"] = this.session;
                 this.session.Pantalla = String.Empty;

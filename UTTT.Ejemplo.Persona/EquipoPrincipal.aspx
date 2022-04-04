@@ -13,21 +13,19 @@
     <form id="form1" runat="server">
         <div class="container">
             <nav class="navbar fixed-top navbar-dark bg-dark">
-                <div class="container-fluid">
+                <div class="container-fluid d-flex">
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnCatdepartamento" onclick="btnCatDepartamento_Click" Text="catDepartamento"></asp:Button>
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEmpleado" onclick="btnEmpleado_Click" Text="Empleado"></asp:Button>
                     <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnEquipo" onclick="btnEquipo_Click" Text="Equipo"></asp:Button>
-                    <form class="d-flex">
-                        <asp:HyperLink runat="server" Cssclass="navbar-brand justify-content-end" id="btnSalir" href="#" onclick="btnSalir_Click">
-                            <img src="Images/logout-blue.png" alt="" width="30" height="24" />
-                            Salir
-                        </asp:HyperLink>
-                    </form>
+                    <asp:Button CssClass="btn btn-outline-info me-2" type="button" runat="server" id="btnSalir" onclick="btnSalir_Click" Text="Salir"></asp:Button>
 
                 </div>
             </nav>
-           
-        </div>
+           <br />
+        <br />
+        <br />
+        <br />
+        <br />
          <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
          <div style="color: #000000; font-size: medium; font-family: Arial; font-weight: bold" class="container-fluid">
             <div class="row">
@@ -124,6 +122,8 @@
                 </div>
             </div>
         </div>
+        </div>
+        
         <asp:LinqDataSource ID="DataSourcePersona" runat="server"
             ContextTypeName="UTTT.Ejemplo.Linq.Data.Entity.DcGeneralDataContext"
             OnSelecting="DataSourcePersona_Selecting"

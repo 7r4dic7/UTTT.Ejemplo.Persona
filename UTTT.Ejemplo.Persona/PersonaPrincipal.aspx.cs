@@ -28,6 +28,7 @@ namespace UTTT.Ejemplo.Persona
         protected void Page_Load(object sender, EventArgs e)
         {
             this.session = (SessionManager)this.Session["SessionManager"];
+            Response.Buffer = true;
             if (this.session == null)
             {
                 this.Response.Redirect("~/Login.aspx");
@@ -135,9 +136,9 @@ namespace UTTT.Ejemplo.Persona
                     case "Eliminar":
                         this.eliminar(idPersona);
                         break;
-                    case "Direccion":
-                        this.direccion(idPersona);
-                        break;
+                    //case "Direccion":
+                    //    this.direccion(idPersona);
+                    //    break;
                 }
             }
             catch (Exception _e)
@@ -178,12 +179,20 @@ namespace UTTT.Ejemplo.Persona
                 Linq.Data.Entity.Usuario usuario = dcDeleteUser.GetTable<Linq.Data.Entity.Usuario>().FirstOrDefault(u => u.idPersona == _idPersona);
                 UTTT.Ejemplo.Linq.Data.Entity.Persona persona = dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().First(
                     c => c.id == _idPersona);
-                if(session.IdPersona != persona.id)
+                if(session.StrNombrePersona != usuario.strNombreUsuario && usuario!= null)
                 {
                     dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
                     dcDeleteUser.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Usuario>().DeleteOnSubmit(usuario);
-                    dcDelete.SubmitChanges();
+                    
                     dcDeleteUser.SubmitChanges();
+                    dcDelete.SubmitChanges();
+                    
+                    this.showMessage("El registro se elimino correctamente.");
+                    this.DataSourcePersona.RaiseViewChanged();
+                }else if (usuario == null)
+                {
+                    dcDelete.GetTable<UTTT.Ejemplo.Linq.Data.Entity.Persona>().DeleteOnSubmit(persona);
+                    dcDelete.SubmitChanges();
                     this.showMessage("El registro se elimino correctamente.");
                     this.DataSourcePersona.RaiseViewChanged();
                 }
@@ -200,23 +209,23 @@ namespace UTTT.Ejemplo.Persona
             }
         }
 
-        private void direccion(int _idPersona)
-        {
-            try
-            {
-                Hashtable parametrosRagion = new Hashtable();
-                parametrosRagion.Add("idPersona", _idPersona.ToString());
-                this.session.Parametros = parametrosRagion;
-                this.Session["SessionManager"] = this.session;
-                this.session.Pantalla = String.Empty;
-                this.session.Pantalla = "~/DireccionManager.aspx";
-                this.Response.Redirect(this.session.Pantalla, false);
-            }
-            catch (Exception _e)
-            {
-                throw _e;
-            }
-        }
+        //private void direccion(int _idPersona)
+        //{
+        //    try
+        //    {
+        //        Hashtable parametrosRagion = new Hashtable();
+        //        parametrosRagion.Add("idPersona", _idPersona.ToString());
+        //        this.session.Parametros = parametrosRagion;
+        //        this.Session["SessionManager"] = this.session;
+        //        this.session.Pantalla = String.Empty;
+        //        this.session.Pantalla = "~/DireccionManager.aspx";
+        //        this.Response.Redirect(this.session.Pantalla, false);
+        //    }
+        //    catch (Exception _e)
+        //    {
+        //        throw _e;
+        //    }
+        //}
 
         #endregion
 
